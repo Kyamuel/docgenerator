@@ -1,0 +1,50 @@
+{
+  "name": "@mathmentor/api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "dev": "nest start --watch",
+    "start": "node dist/main.js",
+    "build": "nest build",
+    "lint": "eslint .",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "@nestjs/common": "^10.0.0",
+    "@nestjs/config": "^3.2.0",
+    "@nestjs/core": "^10.0.0",
+    "@nestjs/platform-express": "^10.0.0",
+    "@nestjs/passport": "^10.0.3",
+    "@nestjs/throttler": "^6.1.0",
+    "@prisma/client": "5.14.0",
+    "axios": "^1.7.3",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "express-rate-limit": "^7.3.0",
+    "helmet": "^7.1.0",
+    "ioredis": "^5.4.1",
+    "jwks-rsa": "^3.1.0",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.1",
+    "stripe": "^16.0.0"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^10.4.5",
+    "@nestjs/schematics": "^10.1.1",
+    "@nestjs/testing": "^10.0.0",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.12.12",
+    "@types/passport-jwt": "^3.0.11",
+    "@types/cookie-parser": "^1.4.6",
+    "eslint": "^8.57.0",
+    "prettier": "^3.3.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
+  }
+}

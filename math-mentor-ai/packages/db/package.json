@@ -1,0 +1,17 @@
+{
+  "name": "@mathmentor/db",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "generate": "prisma generate",
+    "migrate:dev": "prisma migrate dev",
+    "migrate:deploy": "prisma migrate deploy",
+    "studio": "prisma studio"
+  },
+  "devDependencies": {
+    "prisma": "5.14.0"
+  },
+  "dependencies": {
+    "@prisma/client": "5.14.0"
+  }
+}
