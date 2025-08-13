@@ -1,0 +1,82 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: mathmentor_db
+    environment:
+      POSTGRES_USER: mathmentor
+      POSTGRES_PASSWORD: mathmentor
+      POSTGRES_DB: mathmentor
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mathmentor"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  cache:
+    image: redis:7-alpine
+    container_name: mathmentor_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  api:
+    build:
+      context: ../
+      dockerfile: apps/api/Dockerfile
+    container_name: mathmentor_api
+    env_file:
+      - ../.env
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      REDIS_URL: ${REDIS_URL}
+      AUTH0_DOMAIN: ${AUTH0_DOMAIN}
+      AUTH0_AUDIENCE: ${AUTH0_AUDIENCE}
+      JWT_ISSUER: ${JWT_ISSUER}
+      JWT_AUDIENCE: ${JWT_AUDIENCE}
+      API_PORT: 4000
+      API_ORIGIN: http://localhost:3000
+      MATH_SERVICE_URL: http://math:8000
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+      MPESA_CONSUMER_KEY: ${MPESA_CONSUMER_KEY}
+      MPESA_CONSUMER_SECRET: ${MPESA_CONSUMER_SECRET}
+      MPESA_SHORT_CODE: ${MPESA_SHORT_CODE}
+      MPESA_PASSKEY: ${MPESA_PASSKEY}
+      MPESA_SANDBOX: ${MPESA_SANDBOX}
+    ports:
+      - "4000:4000"
+    depends_on:
+      db:
+        condition: service_healthy
+      cache:
+        condition: service_healthy
+      math:
+        condition: service_started
+
+  math:
+    build:
+      context: ../
+      dockerfile: apps/math/Dockerfile
+    container_name: mathmentor_math
+    env_file:
+      - ../.env
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+    ports:
+      - "8000:8000"
+
+volumes:
+  db_data:
+  redis_data:
